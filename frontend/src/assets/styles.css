@@ -1,0 +1,119 @@
+h1{
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
+}
+
+ul{
+    list-style-type: none;
+}
+
+body, #app{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    margin: 0;
+}
+
+.header{
+    text-align: center;
+    font-size: 36px;
+    font-weight: 100;
+}
+
+.header-small {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 100;
+}
+
+.keyboard {
+    width: fit-content;
+    margin: auto;
+}
+
+.keyboard-layout{
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+}
+
+.horizontal{
+    display: flex;
+    flex-direction: row;
+}
+
+.octave{
+    height: 220px;
+    width: 340px;
+}
+
+.octave ul {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.white{
+    height: 100%;
+}
+
+.white li{
+    border: 1px solid black;
+    background-color: white;
+    height: 100%;
+    width: 52px;
+    box-shadow: 0px 3px 2px;
+}
+
+.white li:active{
+    box-shadow: 0 4px 2px;
+}
+
+.black {
+    position: relative;
+    left: 35px;
+    bottom: 220px;
+    height: 60%;
+}
+
+.black li{
+    position: relative;
+    top: -0.5px;    
+    border: 1px solid black;
+    background-color: black;
+    height: 100%;
+    width: 28px;
+    margin-right: 18px;
+    z-index: 2;
+    border-radius: 0 0 3px 3px;
+    box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset,
+    0 -3px 20px 2px rgba(0, 0, 0, 0.6) inset,
+    0 2px 4px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(45deg, #222 0%, #555 100%);
+}
+
+.black li:active {
+    box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -2px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 1px 2px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(left, #444 0%, #222 100%);
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+.selected-white{
+    background-color: lime !important;
+}
+
+.selected-black{
+    box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset,
+    0 -3px 20px 2px rgba(0, 255, 13, 0.6) inset,
+    0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    background: lime !important;
+}
+
+
+

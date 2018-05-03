@@ -1,2 +1,0 @@
-export const INITIALIZE_KEYS_ARRAY = 'INITIALIZE_KEYS';
-export const KEY_PRESSED = 'KEY_PRESSED';
