@@ -2,7 +2,6 @@ import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED } from '../actions/actionTypes';
 import analyzer from '../analyzer';
 
 let initialState = {
-    octaves: 3,
     keys: [],
     selectedKeys: [],
     currentChord: null
@@ -12,31 +11,30 @@ const keyReducer = (state = initialState, action) => {
     switch (action.type) {
         case INITIALIZE_KEYS_ARRAY: {
             return {
-                ...state, keys: initializeKeys(state.octaves)
+                ...state, keys: initializeKeys(action.payload.octaves, action.payload.start)
             }
         }
         case KEY_PRESSED: {
-            var nextState = {
+            const nextState = {
                 ...state,
-                keys: state.keys.map((key) => {
+                keys: state.keys.map(key => {
                     if (key.id === action.payload) {
                         return {
                             ...key, isClicked: !key.isClicked
                         }
                     }
-                    else return key;
+                    else {
+                        return key;
+                    }
                 }),
             }
-            nextState = {
+
+            return {
                 ...nextState, 
-                selectedKeys: nextState.keys.filter((key) => {
-                    return key.isClicked == true;
-                }).map((key) => {
-                    return key.id;
-                })
+                selectedKeys: nextState.keys
+                                .filter(key => key.isClicked == true)
+                                .map(key => key.id)
             }
-            
-            return nextState;
         }    
 
         default: return state;    
@@ -45,54 +43,20 @@ const keyReducer = (state = initialState, action) => {
 
 export default keyReducer;
 
-const initializeKeys = (octaves) => {
-    var notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    var alt = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-    var octave;
-    var a = [];
-    var b = [];
-    for (octave = 0; octave < octaves; octave++) {
-        a = a.concat(notes);
-        b = b.concat(alt);
-    }
-    
-    var keys = a.map((key, index) => {
-        if (index < 12)
-            return {
-                id: key + '3',
-                isClicked: false
-            }
-        else if (index > 11 && index < 24)
-            return {
-                id: key + '4',
-                isClicked: false
-            }
-        else if (index > 22)
-            return {
-                id: key + '5',
-                isClicked: false
-            }
-    })
+const initializeKeys = (octaves, start) => {
+    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const alt = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    const keyboardWithSharps = [].concat(...Array(octaves).fill(notes));
+    const keyboardWithFlats = [].concat(...Array(octaves).fill(alt));
 
-    return keys.map((key, index) => {
-        if (key.id.indexOf('#') > 0) {
-            if (index < 12)
-                return {
-                    ...key,
-                    alt: b[index] + '3',
-                }
-            else if (index > 11 && index < 24)
-                return {
-                    ...key,
-                    alt: b[index] + '4'
-                }
-            else if (index > 22)
-                return {
-                    ...key, alt: b[index] + '5'
-                }
+    return keyboardWithSharps.map((key, index) => {
+        // Each key will have its octave #
+        const octaveNumber = Math.floor(index / 12);
+        const keyObject = { id: key + (start + octaveNumber) };
+        return {
+            ...keyObject,
+            alt: key.indexOf('#') > 0 ? keyObject.id.replace(/\w#/, keyboardWithFlats[index]) : null,
+            isClicked: false,
         }
-        else return {
-            ...key, alt: null
-        };
     })
 }

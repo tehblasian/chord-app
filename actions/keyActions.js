@@ -1,20 +1,18 @@
 import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED } from './actionTypes';
 
-const populateKeysArray = () => {
+export const populateKeysArray = (octaves, start) => {
     return {
-        type: INITIALIZE_KEYS_ARRAY
+        type: INITIALIZE_KEYS_ARRAY,
+        payload: {
+            octaves,
+            start
+        },
     }
 }
 
-
-const keyPressed = (id) => {
+export const keyPressed = (id) => {
     return {
         type: KEY_PRESSED,
-        payload: id
+        payload: id,
     }
-}
-
-export default {
-    populateKeysArray,
-    keyPressed
 }
