@@ -1,4 +1,4 @@
-h1{
+h1, button{
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
 }
 
@@ -28,6 +28,7 @@ body{
 }
 
 .keyboard {
+    position: relative;
     width: fit-content;
     margin: auto;
 }
@@ -36,6 +37,7 @@ body{
     display: flex;
     flex-direction: row;
     padding-left: 0;
+    margin-bottom: 1.5em;
 }
 
 .horizontal{
@@ -115,5 +117,23 @@ body{
     background: lime !important;
 }
 
+.play-button, .clear-button {
+    width: 120px;
+    margin-left: 0.5em;
+    padding: 10px;
+    padding-bottom: 12px;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+.play-button {
+    background: #4CAF50;
+    color: white;
+}
+
+.clear-button {
+    background: #e2e2e2;
+}
 
 

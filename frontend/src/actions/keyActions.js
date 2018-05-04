@@ -1,6 +1,6 @@
-import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED } from './actionTypes';
+import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED, CLEAR_VOICING } from './actionTypes';
 
-export const populateKeysArray = (octaves, start) => {
+export const initializeKeysArray = (octaves, start) => {
     return {
         type: INITIALIZE_KEYS_ARRAY,
         payload: {
@@ -14,5 +14,11 @@ export const keyPressed = (id) => {
     return {
         type: KEY_PRESSED,
         payload: id,
+    }
+}
+
+export const clearVoicing = () => {
+    return {
+        type: CLEAR_VOICING,
     }
 }

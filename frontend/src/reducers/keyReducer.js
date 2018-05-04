@@ -1,4 +1,4 @@
-import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED } from '../actions/actionTypes';
+import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED, CLEAR_VOICING } from '../actions/actionTypes';
 import analyzer from '../analyzer';
 
 let initialState = {
@@ -12,6 +12,13 @@ const keyReducer = (state = initialState, action) => {
         case INITIALIZE_KEYS_ARRAY: {
             return {
                 ...state, keys: initializeKeys(action.payload.octaves, action.payload.start)
+            }
+        }
+        case CLEAR_VOICING: {
+            return {
+                keys: state.keys.map(key => ({ ...key, isClicked: false })),
+                selectedKeys: [],
+                currentChord: null,
             }
         }
         case KEY_PRESSED: {
