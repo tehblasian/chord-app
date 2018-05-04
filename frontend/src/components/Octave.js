@@ -1,38 +1,21 @@
 import React from 'react';
+import PianoKey from './PianoKey';
 
 const Octave = (props) => {
-    const white = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-    const black = ['C#', 'D#', 'hidden', 'F#', 'G#', 'A#'];
+    const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
     return (
-        <div className='octave'>
-            <ul className='white'>
-                {
-                    white.map((note) => {
-                        let name = note + props.offset;
-                        let selected = props.selectedKeys.indexOf(name) >= 0;
-                        return <li key={name} 
-                                   id={name} 
-                                   className={selected ? 'selected-white' : ''} 
-                                   onClick={props.onKeyPress}/>
-                    })
-                }
-            </ul>
-            <ul className='black'>
-                {
-                    black.map((note, index) => {
-                        let name = note + props.offset;
-                        let selected = props.selectedKeys.indexOf(name) >= 0;
-                        if (index == 2) {
-                            return <li key='hidden' className='hidden'/>
-                        } 
-                        return <li key={name} 
-                                   id={name} 
-                                   className={selected ? 'selected-black' : ''} 
-                                   onClick={props.onKeyPress}/>
-                    })
-                }
-            </ul>
-        </div>
+        <React.Fragment>
+            {
+                notes.map(note => {
+                    return <PianoKey 
+                                key={note} 
+                                note={note} 
+                                offset={props.offset} 
+                                selectedKeys={props.selectedKeys} 
+                                onKeyPress={props.onKeyPress}/>
+                })
+            }
+        </React.Fragment>
     )
 }
 

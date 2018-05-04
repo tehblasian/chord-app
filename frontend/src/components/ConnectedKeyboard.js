@@ -31,7 +31,7 @@ class ConnectedKeyboard extends React.Component {
                         Array(octaves)
                             .fill()
                             .map((position, index) => { 
-                                return <li key={index}>
+                                return <li key={index} className="octave">
                                             <Octave offset={index + this.props.start} 
                                                     selectedKeys={selectedKeys} 
                                                     onKeyPress={this.onKeyPress}/>
