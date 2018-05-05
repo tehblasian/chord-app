@@ -1,24 +1,36 @@
-import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED, CLEAR_VOICING } from '../actions/actionTypes';
-import analyzer from '../analyzer';
+import { INITIALIZE_KEYBOARD, KEY_PRESSED, CLEAR_VOICING } from '../actions/ActionTypes';
+import { getChordExtension } from '../util/ChordUtil';
 
 let initialState = {
+    chord: {
+        name: '',
+        root: '',
+        quality: '',
+    },
     keys: [],
-    selectedKeys: [],
-    currentChord: null
+    selectedKeys: {
+        names: [],
+        extensions: [],
+    },
 }
 
-const keyReducer = (state = initialState, action) => {
+const KeyReducer = (state = initialState, action) => {
     switch (action.type) {
-        case INITIALIZE_KEYS_ARRAY: {
+        case INITIALIZE_KEYBOARD: {
             return {
-                ...state, keys: initializeKeys(action.payload.octaves, action.payload.start)
+                ...state,
+                chord: action.payload.chord,
+                keys: initializeKeys(action.payload.octaves, action.payload.start)
             }
         }
         case CLEAR_VOICING: {
             return {
+                ...state,
                 keys: state.keys.map(key => ({ ...key, isClicked: false })),
-                selectedKeys: [],
-                currentChord: null,
+                selectedKeys: {
+                    names: [],
+                    extensions: [],
+                }
             }
         }
         case KEY_PRESSED: {
@@ -36,11 +48,17 @@ const keyReducer = (state = initialState, action) => {
                 }),
             }
 
+            const selectedKeyNames = nextState.keys
+                .filter(key => key.isClicked == true)
+                .map(key => key.id);
+
             return {
                 ...nextState, 
-                selectedKeys: nextState.keys
-                                .filter(key => key.isClicked == true)
-                                .map(key => key.id)
+                selectedKeys: {
+                    names: selectedKeyNames,
+                    extensions: selectedKeyNames
+                                    .map(key => getChordExtension(nextState.chord.root, nextState.chord.quality, key)),
+                }
             }
         }    
 
@@ -48,7 +66,7 @@ const keyReducer = (state = initialState, action) => {
     }
 }
 
-export default keyReducer;
+export default KeyReducer;
 
 const initializeKeys = (octaves, start) => {
     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];

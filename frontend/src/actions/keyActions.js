@@ -1,11 +1,12 @@
-import { INITIALIZE_KEYS_ARRAY, KEY_PRESSED, CLEAR_VOICING } from './actionTypes';
+import { INITIALIZE_KEYBOARD, KEY_PRESSED, CLEAR_VOICING } from './ActionTypes';
 
-export const initializeKeysArray = (octaves, start) => {
+export const initializeKeyboard = (octaves, start, chord) => {
     return {
-        type: INITIALIZE_KEYS_ARRAY,
+        type: INITIALIZE_KEYBOARD,
         payload: {
             octaves,
-            start
+            start,
+            chord,
         },
     }
 }
