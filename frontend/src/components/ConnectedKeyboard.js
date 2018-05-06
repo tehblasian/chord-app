@@ -6,9 +6,15 @@ import { initializeKeyboard, keyPressed, clearVoicing } from '../actions/KeyActi
 import { playNote, playVoicing } from '../util/AudioUtil';
 import { getChordExtension } from '../util/ChordUtil';
 
-@connect((store) => {
+@connect(store => {
     return {
         selectedKeys: store.keyboard.selectedKeys,
+    }
+}, dispatch => {
+    return {
+        initializeKeyboard: (octaves, start, chord) => dispatch(initializeKeyboard(octaves, start, chord)),
+        keyPressed: key => dispatch(keyPressed(key)),
+        clearVoicing: () => dispatch(clearVoicing()),
     }
 })
 class ConnectedKeyboard extends React.Component {
@@ -16,7 +22,7 @@ class ConnectedKeyboard extends React.Component {
         super(props);
         this.state = {
             chord: {
-                name: 'C7b7#11',
+                name: 'C7b9#11',
                 root: 'C',
                 quality: 'half-diminished',
             }
@@ -24,15 +30,15 @@ class ConnectedKeyboard extends React.Component {
     }
 
     componentWillMount() {
-        this.props.dispatch(initializeKeyboard(this.props.octaves, this.props.start, this.state.chord));
+        this.props.initializeKeyboard(this.props.octaves, this.props.start, this.state.chord);
     }
   
     onKeyPress = (event) => {
-        const note = event.target.id;
-        if (!this.props.selectedKeys.names.includes(note)) {
-            playNote(note)
+        const key = event.target.id;
+        if (!this.props.selectedKeys.names.includes(key)) {
+            playNote(key);
         }
-        this.props.dispatch(keyPressed(note));
+        this.props.keyPressed(key);
     }
 
     render() {
@@ -64,7 +70,7 @@ class ConnectedKeyboard extends React.Component {
                 </h1>
                 <div style={{ display: 'inline-block', float: 'right' }}>
                     <button className="play-button" onClick={() => playVoicing(selectedKeys.names)}>Play</button>
-                    <button className="clear-button" onClick={() => this.props.dispatch(clearVoicing())}>Clear</button>
+                    <button className="clear-button" onClick={this.props.clearVoicing}>Clear</button>
                 </div>
             </div>
         )

@@ -1,4 +1,5 @@
 import teoria, { Interval } from 'teoria';
+import { Chord } from 'tonal';
 
 const chordExtensionIndex = {
     'major': {
