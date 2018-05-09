@@ -1,5 +1,5 @@
 import teoria, { Interval } from 'teoria';
-import { Chord } from 'tonal';
+import { Chord, Distance } from 'tonal';
 
 const chordExtensionIndex = {
     'major': {
@@ -7,6 +7,12 @@ const chordExtensionIndex = {
             '1': '1',
             '4': '4',
             '5': '5',
+        },
+        'm': {
+            '2': 'b2',
+            '3': '+2',
+            '6': '#5',
+            '7': '-',
         },
         'M': {
             '2': '2',
@@ -16,7 +22,8 @@ const chordExtensionIndex = {
         },
         'A': {
             '1': 'b2',
-            '2': 'b3',
+            '2': '+2',
+            '3': '4',
             '4': 'b5',
             '5': '#5',
             '6': '-',
@@ -28,6 +35,10 @@ const chordExtensionIndex = {
             '4': '4',
             '5': '5',
         },
+        'm': {
+            '3': '#9',
+            '7': 'b7',
+        },
         'M': {
             '2': '9',
             '3': '3',
@@ -36,10 +47,8 @@ const chordExtensionIndex = {
         },
         'A': {
             '1': '#15',
-            '2': '#9',
             '4': '#11',
             '5': '#5',
-            '6': '-',
         }
     },
     'minor': {
@@ -52,14 +61,16 @@ const chordExtensionIndex = {
             '2': '2',
             '3': 'M3',
             '6': 'M6',
-            '7': 'M7',
+            '7': '-',
+        },
+        'm': {
+            '3': '3',
+            '7': '-',
         },
         'A': {
             '1': 'b2',
-            '2': '3',
             '4': 'b5',
             '5': '6',
-            '6': '7',
         }
     },
     'minor7': {
@@ -74,12 +85,14 @@ const chordExtensionIndex = {
             '6': 'M13',
             '7': 'M7',
         },
+        'm': {
+            '3': '#9',
+            '7': '7',
+        },
         'A': {
             '1': 'b2',
-            '2': '3',
             '4': 'b5',
             '5': '13',
-            '6': '7',
         }
     },
     'dominant': {
@@ -94,14 +107,24 @@ const chordExtensionIndex = {
             '6': '13',
             '7': 'M7',
         },
+        'm': {
+            '3': '#9',
+            '7': '7',
+        },
         'A': {
             '1': 'b9',
-            '2': '#9',
             '4': '#11',
             '5': 'b13',
-            '6': 'b7',
         }
     },
+}
+
+const chordExtensionIndexBySemitones = {
+    'major': ['1', 'b2', '2', '+2', '3', '4', 'b5', '5', '#5', '6', '-', '-'],
+    'major7': ['1', '#15', '9', '#9', '3', '11', '#11', '5', '#5', '13', '-', '7'],
+    'minor': ['1', 'b2', '2', '3', '-', '4', 'b5', '5', '6', 'M6', '7', 'M7'],
+    'minor7': ['1', 'b2', '9', '3', '-', '11', 'b5', '5', '13', 'M13', '7', 'M7'],
+    'dominant': ['1', 'b9', '9', '#9', '3', '11', '#11', '5', 'b13', '13', '7', '-'],
 }
 
 export const getAllChordNames = () => {
@@ -114,11 +137,8 @@ export const validateChordName = name => Chord.exists(name);
 
 export const getChordRoot = chord => {
     try {
-        return teoria
-            .chord(chord)
-            .root
-            .name()
-            .toUpperCase();
+        const root = Chord.notes(chord)[0];
+        return root[0].toUpperCase() + root.slice(1);
     } catch (error) {
         return '';
     }
@@ -141,14 +161,7 @@ export const getChordQuality = chord => {
 
 export const getChordExtension = (root, chordQuality, note) => {
     const noteWithoutOctaveNumber = note.replace(/\d/, '');
-    const interval = Interval.between(teoria.note(root), teoria.note(noteWithoutOctaveNumber)).toString();
-    const intervalQuality = interval[0];
-    const intervalValue = interval.slice(1);
-    console.log(interval)
-    if (chordQuality === 'half-diminished') {
-        chordQuality = 'minor7';
-    }
-
-    return chordExtensionIndex[chordQuality][intervalQuality][intervalValue];
+    const semitones = Distance.semitones(root, noteWithoutOctaveNumber);
+    return chordExtensionIndexBySemitones[chordQuality][semitones];
 }
 
