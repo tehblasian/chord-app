@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import KeyReducer from './KeyReducer';
 
 const RootReducer = combineReducers({
-    keyboard: KeyReducer
+    keyboard: KeyReducer,
+    form: formReducer
 });
 
 export default RootReducer;

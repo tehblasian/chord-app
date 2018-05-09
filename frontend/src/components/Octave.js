@@ -12,7 +12,8 @@ const Octave = (props) => {
                                 note={note} 
                                 offset={props.offset} 
                                 selectedKeys={props.selectedKeys} 
-                                onKeyPress={props.onKeyPress}/>
+                                onKeyPress={props.onKeyPress}
+                                enabled={props.enabled}/>
                 })
             }
         </React.Fragment>

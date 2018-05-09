@@ -1,5 +1,5 @@
-import { INITIALIZE_KEYBOARD, KEY_PRESSED, CLEAR_VOICING } from '../actions/ActionTypes';
-import { getChordExtension } from '../util/ChordUtil';
+import { INITIALIZE_KEYBOARD, UPDATE_CHORD, KEY_PRESSED, CLEAR_VOICING } from '../actions/ActionTypes';
+import {  getChordRoot, getChordQuality, getChordExtension } from '../util/ChordUtil';
 
 let initialState = {
     chord: {
@@ -19,10 +19,19 @@ const KeyReducer = (state = initialState, action) => {
         case INITIALIZE_KEYBOARD: {
             return {
                 ...state,
-                chord: action.payload.chord,
                 keys: initializeKeys(action.payload.octaves, action.payload.start)
             }
         }
+        case UPDATE_CHORD: {
+            return {
+                ...state, 
+                chord: {
+                    name: action.payload,
+                    root: getChordRoot(action.payload),
+                    quality: getChordQuality(action.payload),
+                }
+            }
+        } 
         case CLEAR_VOICING: {
             return {
                 ...state,

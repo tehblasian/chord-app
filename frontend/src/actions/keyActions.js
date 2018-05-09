@@ -1,4 +1,4 @@
-import { INITIALIZE_KEYBOARD, KEY_PRESSED, CLEAR_VOICING } from './ActionTypes';
+import { INITIALIZE_KEYBOARD, UPDATE_CHORD, KEY_PRESSED, CLEAR_VOICING } from './ActionTypes';
 
 export const initializeKeyboard = (octaves, start, chord) => {
     return {
@@ -6,8 +6,14 @@ export const initializeKeyboard = (octaves, start, chord) => {
         payload: {
             octaves,
             start,
-            chord,
         },
+    }
+}
+
+export const updateChordName = (chord) => {
+    return {
+        type: UPDATE_CHORD,
+        payload: chord,
     }
 }
 
