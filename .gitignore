@@ -3,3 +3,4 @@
 coverage/
 server/build/
 caption-this-keypair.pem
+database

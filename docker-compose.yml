@@ -1,38 +1,53 @@
 version: '3'
 
 services:
-  server:
-    build: ./server
-    container_name: server
-    environment:
-      - TZ=America/Montreal
-    ports:
-      - "80:80"
-    volumes:
-      - ./frontend:/var/www
-      - ./server/static:/var/static
+    server:
+        build: ./server
+        container_name: chord-app-server
+        environment:
+            TZ: "America/Montreal"
+        ports:
+            - "80:80"
+        volumes:
+            - ./frontend:/var/www
+            - ./server/static:/var/static
 
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    env_file:
-      - ./frontend/.env
-    environment:
-      - TZ=America/Montreal
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend/src:/usr/src/app/src
-      - ./frontend/public:/usr/src/app/public
+    frontend:
+        build: ./frontend
+        container_name: chord-app-frontend
+        env_file:
+            - ./frontend/.env
+        environment:
+            TZ: "America/Montreal"
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./frontend/src:/usr/src/app/src
+            - ./frontend/public:/usr/src/app/public
 
-  backend:
-    build: ./backend
-    container_name: backend
-    env_file:
-      - ./backend/.env
-    environment:
-      - TZ=America/Montreal
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend/app:/usr/src/app
+    backend:
+        build: ./backend
+        container_name: chord-app-backend
+        env_file:
+            - ./backend/.env
+        environment:
+            DB_HOST: db
+            TZ: "America/Montreal"
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./backend/app:/usr/src/app
+    
+    db:
+        image: postgres
+        container_name: chord-app-db
+        environment:
+            POSTGRES_DB: chord-app
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports: 
+            - "5432:5432"
+        volumes:
+            - ./database:/usr/src/app/postgresql/data
+
+
