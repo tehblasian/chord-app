@@ -4,11 +4,23 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        root: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                is: /^[ABCDEFG][b|#]?$/,
+                len: [1, 2],
+            },
+        },
+        quality: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         voicing: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: false,
         },
-    }, { underscored: true });
+    });
 
     Voicing.associate = (models) => {
         Voicing.belongsTo(models.User, {

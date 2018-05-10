@@ -24,7 +24,7 @@ export default (sequelize, DataTypes) => {
                 isEmail: true,
             },
         },
-    }, { underscored: true });
+    });
 
     return User;
 };

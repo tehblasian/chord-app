@@ -16,8 +16,11 @@ export default async (delay, tries) => {
         host: DB_HOST || 'localhost',
         port: DB_PORT,
         operatorsAliases: Sequelize.Op,
+        define: {
+            underscored: true,
+        },
     });
-    
+
     let connected = false;
     let maxReconnects = tries;
     while (!connected && maxReconnects) {
