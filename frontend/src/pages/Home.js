@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid, isDirty } from 'redux-form'
-import ChordNameForm from './ChordNameForm';
-import ConnectedKeyboard from'./ConnectedKeyboard';
+import ChordNameForm from '../components/ChordNameForm';
+import ConnectedKeyboard from'../components/ConnectedKeyboard';
 import { updateChordName } from '../actions/KeyActions';
 
 const mapStateToProps = store => ({

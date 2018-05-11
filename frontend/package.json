@@ -12,11 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "axios": "latest",
+    "history": "^4.7.2",
     "material-ui": "^0.20.0",
     "react": "latest",
     "react-dom": "latest",
     "react-redux": "latest",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
     "redux": "latest",
     "redux-form": "^7.3.0",
     "redux-form-material-ui": "^4.3.4",

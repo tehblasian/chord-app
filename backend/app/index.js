@@ -32,7 +32,7 @@ getModels(connectionDelay, maxReconnects).then((models) => {
         app.use(injectUser({ SECRET, REFRESH_SECRET }));
 
         // Set up GraphQL endpoint and editor
-        const graphqlEndpoint = '/graphql';
+        const graphqlEndpoint = '/api/graphql';
         app.use(
             graphqlEndpoint,
             bodyParser.json(),
@@ -46,7 +46,7 @@ getModels(connectionDelay, maxReconnects).then((models) => {
                 },
             })),
         );
-        app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
+        app.use('/api/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
 
         models.connection.sync().then(() => {
             app.listen(process.env.PORT, 'backend', () => console.log(`Server listening on port ${process.env.PORT}`));
