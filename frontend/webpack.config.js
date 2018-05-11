@@ -9,6 +9,7 @@ const config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index_bundle.js',
+        publicPath: '/',
     },
     module: {
         loaders: [
@@ -36,6 +37,7 @@ const config = {
             aggregateTimeout: 300,
             poll: 1000,
         },
+        historyApiFallback: true,
     },
     node: {
         fs: "empty",
