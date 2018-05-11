@@ -4,10 +4,14 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import path from 'path';
+import { injectUser } from './util/AuthUtil';
 
 import getModels from './models';
 
 const app = express();
+
+const SECRET = 'deez';
+const REFRESH_SECRET = 'nutz';
 
 // Create GraphQL schema
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')));
@@ -24,20 +28,23 @@ getModels(connectionDelay, maxReconnects).then((models) => {
     if (models === null) {
         console.log('Could not connect to database!');
     } else {
+        // Add middleware to inject user into request body
+        app.use(injectUser({ SECRET, REFRESH_SECRET }));
+
         // Set up GraphQL endpoint and editor
         const graphqlEndpoint = '/graphql';
         app.use(
             graphqlEndpoint,
             bodyParser.json(),
-            graphqlExpress({
+            graphqlExpress(req => ({
                 schema,
                 context: {
                     models,
-                    user: {
-                        id: 1,
-                    },
+                    user: req.user,
+                    SECRET,
+                    REFRESH_SECRET,
                 },
-            }),
+            })),
         );
         app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
 

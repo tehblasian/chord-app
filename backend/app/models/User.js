@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 export default (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         username: {
@@ -5,15 +7,24 @@ export default (sequelize, DataTypes) => {
             unique: true,
             allowNull: false,
             validate: {
-                len: [3, 20],
-                is: /^[a-z0-9_-]{3,20}$/,
+                len: {
+                    args: [3, 20],
+                    msg: 'The username must be between 3 and 20 characters long',
+                },
+                is: {
+                    args: /^[a-z0-9_-]{3,20}$/,
+                    msg: 'The username may only alphanumeric characters, hyphens, and underscores',
+                },
             },
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                len: [6, 14],
+                len: {
+                    args: [6, 20],
+                    msg: 'The password must be between 6 and 20 characters long',
+                },
             },
         },
         email: {
@@ -21,7 +32,17 @@ export default (sequelize, DataTypes) => {
             unique: true,
             allowNull: false,
             validate: {
-                isEmail: true,
+                isEmail: {
+                    args: true,
+                    msg: 'Invalid email',
+                },
+            },
+        },
+    }, {
+        hooks: {
+            afterValidate: async (user) => {
+                // eslint-disable-next-line no-param-reassign
+                user.password = await bcrypt.hash(user.password, 12);
             },
         },
     });

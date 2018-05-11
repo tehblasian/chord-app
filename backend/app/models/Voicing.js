@@ -8,8 +8,14 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                is: /^[ABCDEFG][b|#]?$/,
-                len: [1, 2],
+                is: {
+                    args: /^[ABCDEFG][b|#]?$/,
+                    msg: 'Invalid chord root',
+                },
+                len: {
+                    args: [1, 2],
+                    msg: 'Invalid chord root',
+                },
             },
         },
         quality: {

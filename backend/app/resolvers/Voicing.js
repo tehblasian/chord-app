@@ -1,3 +1,5 @@
+import formatErrors from '../util/ErrorUtil';
+
 export default {
     Query: {
         getVoicingById: (parent, { id }, { models }) => models.Voicing.findOne({
@@ -12,9 +14,24 @@ export default {
         getAllVoicings: (parent, args, { models }) => models.Voicing.findAll(),
     },
     Mutation: {
-        createVoicing: (parent, args, { models, user }) => models.Voicing.create({
-            ...args,
-            userId: user.id,
-        }),
+        createVoicing: (parent, { input: { ...args } }, { models, user }) => {
+            try {
+                const voicing = models.Voicing.create({
+                    ...args,
+                    userId: user.id,
+                });
+                return {
+                    success: true,
+                    voicing,
+                    errors: null,
+                };
+            } catch (errors) {
+                return {
+                    success: false,
+                    voicing: null,
+                    errors: formatErrors(errors, models),
+                };
+            }
+        },
     },
 };

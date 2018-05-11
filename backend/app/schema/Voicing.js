@@ -8,8 +8,21 @@ export default `
         voicing: [String!]!
     }
 
+    input CreateVoicingInput {
+        name: String!
+        root: String!
+        quality: String!
+        voicing: [String!]!
+    }
+
+    type CreateVoicingResponse {
+        success: Boolean!
+        voicing: Voicing
+        errors: [Error!]
+    }
+
     type Mutation {
-        createVoicing(name: String!, root: String!, quality: String!, voicing: [String!]!): Voicing!
+        createVoicing(input: CreateVoicingInput!): CreateVoicingResponse!
     }
 
     type Query {
