@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 
+import { ProtectedRoute } from './util/AuthUtil';
+
 import './assets/styles.css';
 
 export default class App extends React.Component{
@@ -12,7 +14,7 @@ export default class App extends React.Component{
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route path="/create-a-voicing" component={Home}/>
+                    <ProtectedRoute path="/create-a-voicing" component={Home}/>
                     <Route path="/register" component={RegisterPage}/>
                     <Route path="/login" component={LoginPage}/>
                 </Switch>

@@ -7,6 +7,8 @@ import { graphql, compose } from 'react-apollo';
 
 import LoginForm from '../components/LoginForm';
 
+import { isAuthenticated } from '../util/AuthUtil';
+
 const mapStateToProps = store => ({
     credentials: formValueSelector('LoginForm')(store, 'username', 'password'),
 });
@@ -29,7 +31,8 @@ class LoginPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            redirect: false,
+            redirectToMain: false,
+            redirectToReferrer: isAuthenticated(),
         };
     }
 
@@ -41,7 +44,7 @@ class LoginPage extends React.Component {
         if (success) {
             localStorage.setItem('x-token', token);
             localStorage.setItem('x-refresh-token', refreshToken);
-            this.setState({ redirect: true });
+            this.setState({ redirectToMain: true });
         } else {
             let validationErrors = {};
             errors.map(({ path, message }) => validationErrors[path] = message);
@@ -50,14 +53,20 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { redirect } = this.state;
+        const { redirectToMain, redirectToReferrer } = this.state;
+        const { from } = this.props.location.state || { from: { pathname: '/' } };
+
+        if (redirectToReferrer) {
+            return <Redirect to={from}/>
+        }
+        
         return (
             <div className="login-page-container">
                 <h1 className="header-large" style={{ margin: '0.5em auto' }}>Log In</h1>
                 <LoginForm onSubmit={this.handleSubmit}/>
                 <h1 className="sign-up-or-join">New to Voice It? <Link to="/register">Create an account</Link></h1>
                 {
-                    redirect && <Redirect push to='/create-a-voicing'/>
+                    redirectToMain && <Redirect push to='/create-a-voicing'/>
                 }
             </div>
         )
