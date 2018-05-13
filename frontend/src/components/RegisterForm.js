@@ -5,19 +5,12 @@ import { RaisedButton } from 'material-ui';
 import { TextField } from 'redux-form-material-ui';
 import { MuiThemeProvider } from 'material-ui/styles';
 
-const validate = values => {
-    const { username, email, password } = values;
-
-    let errors = {};
-    username ? '' : errors.username = 'Required';
-    email ? '' : errors.email = 'Required';
-    password ? '' : errors.password = 'Required';
-
-    return errors;
-}
+import { validateLoginRegisgration as validate } from '../util/AuthUtil';
 
 const styles = { 
-    fields: { marginBottom: '5px', width: '80%' },
+    container: { marginBottom: '5px', width: '80%' },
+    input: { WebkitBoxShadow: '0 0 0 1000px white inset' },
+    hint: { zIndex: 1 },
     floatingLabelStyle: { fontSize: '20px', top: '34px' },
     errors: { textAlign: 'right' },
 };
@@ -30,29 +23,36 @@ let RegisterForm = props => {
                 <Field
                     name="username"
                     component={TextField}
-                    style={styles.fields}
+                    style={styles.container}
+                    inputStyle={styles.input}
                     floatingLabelFixed={true}
                     floatingLabelStyle={styles.floatingLabelStyle}
                     floatingLabelText="Username"
                     errorStyle={styles.errors}
-                    hintText="i.e. jazzbrah"/>
+                    hintText="i.e. jazzbrah"
+                    hintStyle={styles.hint}/>
                 <Field
                     name="email"
                     component={TextField}
-                    style={styles.fields}
+                    style={styles.container}
+                    inputStyle={styles.input}
                     floatingLabelFixed={true}
                     floatingLabelStyle={styles.floatingLabelStyle}
                     floatingLabelText="Email"
                     errorStyle={styles.errors}
-                    hintText="i.e. example@example.com"/>
+                    hintText="i.e. example@example.com"
+                    hintStyle={styles.hint}/>
                 <Field
                     name="password"
+                    type="password"
                     component={TextField}
-                    style={styles.fields}
+                    style={styles.container}
+                    inputStyle={styles.input}
                     floatingLabelFixed={true}
                     floatingLabelStyle={styles.floatingLabelStyle}
                     errorStyle={styles.errors}
-                    floatingLabelText="Password"/>
+                    floatingLabelText="Password"
+                    hintStyle={styles.hint}/>
                 <RaisedButton 
                     type="submit"
                     label="Create an account"

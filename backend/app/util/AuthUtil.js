@@ -29,22 +29,24 @@ export const createTokens = async (user, SECRET, REFRESH_SECRET) => {
 };
 
 export const tryLogin = async (username, password, models, SECRET, REFRESH_SECRET) => {
+    const loginErrors = {
+        success: false,
+        errors: [
+            { path: 'username', message: ' ' },
+            { path: 'password', message: 'Incorrect username or password' },
+        ],
+    };
+
     // Get user
     const user = await models.User.findOne({ where: { username }, raw: true });
     if (!user) {
-        return {
-            success: false,
-            errors: [{ path: 'username', message: 'Incorrect username or password' }],
-        };
+        return loginErrors;
     }
 
     // Check if password is valid
     const validLogin = await bcrypt.compare(password, user.password);
     if (!validLogin) {
-        return {
-            success: false,
-            errors: [{ path: 'password', message: 'Incorrect username or password' }],
-        };
+        return loginErrors;
     }
 
     // Get tokens if succesful
@@ -127,3 +129,22 @@ export const injectUser = ({ SECRET, REFRESH_SECRET }) => async (req, res, next)
     }
     next();
 };
+
+// To authenticate resolvers (from graphql-express-template)
+const createResolver = (resolver) => {
+    const baseResolver = resolver;
+    baseResolver.createResolver = (childResolver) => {
+        const newResolver = async (parent, args, context, info) => {
+            await resolver(parent, args, context, info);
+            return childResolver(parent, args, context, info);
+        };
+        return createResolver(newResolver);
+    };
+    return baseResolver;
+};
+
+export const requiresAuth = createResolver((parent, args, { user }) => {
+    if (!user || !user.id) {
+        throw new Error('Not authenticated');
+    }
+});

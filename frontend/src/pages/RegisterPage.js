@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { formValueSelector, SubmissionError } from 'redux-form';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
+
 import RegisterForm from '../components/RegisterForm';
 
 const mapStateToProps = store => ({
@@ -33,7 +34,6 @@ class RegisterPage extends React.Component {
 
     handleSubmit = async event => {
         const { mutate, input } = this.props;
-        console.log(input)
         const { data: { register } } = await mutate({ variables: { input }});
         const { success, errors } = register;
 

@@ -4,33 +4,48 @@ import { RaisedButton } from 'material-ui';
 import { TextField } from 'redux-form-material-ui';
 import { MuiThemeProvider } from 'material-ui/styles';
 
+import { validateLoginRegisgration as validate } from '../util/AuthUtil';
+
+const styles = { 
+    container: { marginBottom: '5px', width: '80%' },
+    input: { WebkitBoxShadow: '0 0 0 1000px white inset' },
+    floatingLabelStyle: { fontSize: '20px', top: '34px' },
+    errors: { textAlign: 'right' },
+};
+
 let LoginForm = props => {
-    const { handleSubmit, pristine, submitting } = props;
+    const { onSubmit, handleSubmit, invalid, submitting } = props;
     return (
         <MuiThemeProvider>
-            <form className="register-form" onSubmit={handleSubmit}>
+            <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
                 <Field
                     name="username"
                     component={TextField}
-                    style={{ width: '80%' }}
+                    style={styles.container}
+                    inputStyle={styles.input}
                     fullWidth={true}
                     floatingLabelFixed={true}
-                    floatingLabelStyle={{ fontSize: '20px', top: '34px' }}
-                    floatingLabelText="Username"/>
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    floatingLabelText="Username"
+                    errorStyle={styles.errors}/>
                 <Field
                     name="password"
                     component={TextField}
-                    style={{ width: '80%' }}
+                    style={styles.container}
+                    type="password"
+                    inputStyle={styles.input}
                     fullWidth={true}
                     floatingLabelFixed={true}
-                    floatingLabelStyle={{ fontSize: '20px', top: '34px' }}
-                    floatingLabelText="Password"/>
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    floatingLabelText="Password"
+                    errorStyle={styles.errors}/>
                 <RaisedButton 
                     type="submit"
+                    backgroundColor="#4CAF50"
                     label="Log in"
                     labelColor="#ffffff"
                     style={{ marginTop: '1em', width: '80%' }}
-                    disabled={pristine || submitting}/>
+                    disabled={invalid || submitting}/>
                 
             </form>
         </MuiThemeProvider>
@@ -39,6 +54,7 @@ let LoginForm = props => {
 
 LoginForm = reduxForm({
     form: 'LoginForm',
+    validate,
 })(LoginForm);
 
 export default LoginForm;

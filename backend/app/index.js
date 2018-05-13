@@ -47,8 +47,9 @@ getModels(connectionDelay, maxReconnects).then((models) => {
             })),
         );
         app.use('/api/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
-
-        app.listen(process.env.PORT, 'backend', () => console.log(`Server listening on port ${process.env.PORT}`));
+        models.connection.sync().then(() => {
+            app.listen(process.env.PORT, 'backend', () => console.log(`Server listening on port ${process.env.PORT}`));
+        });
     }
 });
 
