@@ -7,6 +7,13 @@ export default (sequelize, DataTypes) => {
             unique: true,
             allowNull: false,
             validate: {
+                isUnique: async (username, next) => {
+                    const exists = await User.findOne({ where: { username } });
+                    if (exists) {
+                        return next('This username is already taken');
+                    }
+                    return next();
+                },
                 len: {
                     args: [3, 20],
                     msg: 'The username must be between 3 and 20 characters long',
@@ -34,7 +41,7 @@ export default (sequelize, DataTypes) => {
             validate: {
                 isEmail: {
                     args: true,
-                    msg: 'Invalid email',
+                    msg: 'Please enter a valid email',
                 },
             },
         },

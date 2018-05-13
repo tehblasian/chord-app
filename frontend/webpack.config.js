@@ -3,6 +3,7 @@ const path = require('path');
 
 const config = {
     entry: [
+        'babel-polyfill',
         './src/index.js',
         'webpack-dev-server/client?http://localhost:3000',
     ],

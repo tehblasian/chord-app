@@ -15,10 +15,6 @@ services:
     frontend:
         build: ./frontend
         container_name: chord-app-frontend
-        env_file:
-            - ./frontend/.env
-        environment:
-            TZ: "America/Montreal"
         ports:
             - "3000:3000"
         volumes:

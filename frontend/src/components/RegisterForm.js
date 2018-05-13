@@ -5,42 +5,63 @@ import { RaisedButton } from 'material-ui';
 import { TextField } from 'redux-form-material-ui';
 import { MuiThemeProvider } from 'material-ui/styles';
 
+const validate = values => {
+    const { username, email, password } = values;
+
+    let errors = {};
+    username ? '' : errors.username = 'Required';
+    email ? '' : errors.email = 'Required';
+    password ? '' : errors.password = 'Required';
+
+    return errors;
+}
+
+const styles = { 
+    fields: { marginBottom: '5px', width: '80%' },
+    floatingLabelStyle: { fontSize: '20px', top: '34px' },
+    errors: { textAlign: 'right' },
+};
+
 let RegisterForm = props => {
-    const { handleSubmit, pristine, submitting } = props;
+    const { onSubmit, handleSubmit, invalid, submitting } = props;
     return (
         <MuiThemeProvider>
-            <form className="register-form" onSubmit={handleSubmit}>
+            <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
                 <Field
                     name="username"
                     component={TextField}
-                    style={{ width: '80%' }}
+                    style={styles.fields}
                     floatingLabelFixed={true}
-                    floatingLabelStyle={{ fontSize: '20px', top: '34px' }}
+                    floatingLabelStyle={styles.floatingLabelStyle}
                     floatingLabelText="Username"
+                    errorStyle={styles.errors}
                     hintText="i.e. jazzbrah"/>
                 <Field
                     name="email"
                     component={TextField}
-                    style={{ width: '80%' }}
+                    style={styles.fields}
                     floatingLabelFixed={true}
-                    floatingLabelStyle={{ fontSize: '20px', top: '34px' }}
+                    floatingLabelStyle={styles.floatingLabelStyle}
                     floatingLabelText="Email"
+                    errorStyle={styles.errors}
                     hintText="i.e. example@example.com"/>
                 <Field
                     name="password"
                     component={TextField}
-                    style={{ width: '80%' }}
+                    style={styles.fields}
                     floatingLabelFixed={true}
-                    floatingLabelStyle={{ fontSize: '20px', top: '34px' }}
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    errorStyle={styles.errors}
                     floatingLabelText="Password"/>
                 <RaisedButton 
+                    type="submit"
                     label="Create an account"
-                    labelColor="white"
+                    labelColor="#ffffff"
                     labelStyle={{ textTransform: 'none', fontSize: '16px' }}
                     backgroundColor="#4CAF50"
                     buttonStyle={{ height: 'auto', padding: '5px' }}
                     style={{ marginTop: '1em', width: '80%' }}
-                    disabled={pristine || submitting}/>
+                    disabled={invalid || submitting}/>
             </form>
         </MuiThemeProvider>
     )
@@ -48,6 +69,7 @@ let RegisterForm = props => {
 
 RegisterForm = reduxForm({
     form: 'RegisterForm',
+    validate,
 })(RegisterForm);
 
 export default RegisterForm;

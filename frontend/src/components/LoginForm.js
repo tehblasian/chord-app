@@ -26,8 +26,9 @@ let LoginForm = props => {
                     floatingLabelStyle={{ fontSize: '20px', top: '34px' }}
                     floatingLabelText="Password"/>
                 <RaisedButton 
+                    type="submit"
                     label="Log in"
-                    labelColor="white"
+                    labelColor="#ffffff"
                     style={{ marginTop: '1em', width: '80%' }}
                     disabled={pristine || submitting}/>
                 
